@@ -6,24 +6,31 @@
 //
 
 import UIKit
+import CoreML
+import Vision
 
 class PriceViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+    @IBOutlet weak var areaText: UITextField!
+    @IBOutlet weak var floorText: UITextField!
+    @IBOutlet weak var roomsText: UITextField!
+    @IBOutlet weak var latitudeText: UITextField!
+    @IBOutlet weak var longirudeText: UITextField!
+    @IBOutlet weak var priceLabel: UILabel!
+    let model = ApartmentsPricer()
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func btn(_ sender: Any) {
+        let area = Double(areaText.text!) ?? 0.0
+        let floor = Double(floorText.text!) ?? 0.0
+        let rooms = Double(roomsText.text!) ?? 0.0
+        let latitude = Double(latitudeText.text!) ?? 0.0
+        let longitude = Double(longirudeText.text!) ?? 0.0
+        let prediction = try? model.prediction(
+            Area: area,
+            Floor: floor,
+            Rooms: rooms,
+            Latitude: latitude,
+            Longitude: longitude)
+        let price = prediction?.Price
+        priceLabel.text = String(Int(price!)) + " $"
     }
-    */
-
 }
